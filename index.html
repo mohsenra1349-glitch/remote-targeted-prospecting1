@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An experimental approach combining aerial imagery, software-assisted review, terrain observations and mental map dowsing to identify locations for independent field testing.">
+  <meta name="theme-color" content="#101712">
+  <title>Remote Targeted Prospecting | Mrasolii</title>
+  <style>
+    :root{
+      --bg:#101712;--panel:#17231c;--panel2:#1d2b22;--text:#edf2e9;
+      --muted:#b4c0b3;--gold:#d8b56b;--line:rgba(226,231,216,.14);
+      --max:1120px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:var(--gold);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+    header{position:sticky;top:0;z-index:5;background:rgba(16,23,18,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{font-weight:750;letter-spacing:.04em;color:var(--text)}
+    .brand span{color:var(--gold)}
+    .links{display:flex;gap:22px;flex-wrap:wrap;font-size:.92rem}
+    .links a{color:var(--muted)}
+    .hero{padding:92px 0 76px;background:
+      radial-gradient(ellipse at 75% 20%,rgba(216,181,107,.16),transparent 35%),
+      linear-gradient(135deg,#17251c 0%,#101712 65%)}
+    .eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;font-weight:700}
+    h1{font-size:clamp(2.5rem,6vw,5rem);line-height:1.04;letter-spacing:-.045em;max-width:850px;margin:18px 0}
+    .lead{font-size:clamp(1.05rem,2vw,1.3rem);color:#d2dbcf;max-width:760px}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+    .btn{display:inline-block;padding:12px 19px;border-radius:7px;font-weight:700;border:1px solid var(--gold)}
+    .btn.primary{background:var(--gold);color:#172016}
+    .btn.secondary{color:var(--text);border-color:var(--line)}
+    .visual{margin-top:48px;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:230px;
+      background:
+       linear-gradient(90deg,rgba(12,19,14,.18),rgba(12,19,14,.7)),
+       repeating-linear-gradient(25deg,transparent 0 28px,rgba(213,194,135,.11) 29px 30px),
+       repeating-linear-gradient(115deg,transparent 0 46px,rgba(213,194,135,.09) 47px 48px),
+       radial-gradient(ellipse at 50% 50%,#50694b,#293e2f 42%,#17261d 78%);
+      display:flex;align-items:center;justify-content:center;position:relative}
+    .target{width:150px;height:150px;border:1px solid rgba(235,205,132,.8);border-radius:50%;display:grid;place-items:center;position:relative}
+    .target:before,.target:after{content:"";position:absolute;background:rgba(235,205,132,.65)}
+    .target:before{height:1px;width:220px}.target:after{width:1px;height:220px}
+    .target i{width:12px;height:12px;background:var(--gold);border-radius:50%;box-shadow:0 0 0 9px rgba(216,181,107,.16)}
+    .visual-label{position:absolute;bottom:16px;left:18px;color:#dbe3d6;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+    section{padding:76px 0;border-bottom:1px solid var(--line)}
+    h2{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.15;margin:0 0 18px;letter-spacing:-.025em}
+    h3{margin:0 0 8px;font-size:1.12rem}
+    p{color:var(--muted);margin:0 0 15px}
+    .intro{max-width:760px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px}
+    .num{color:var(--gold);font-size:.8rem;letter-spacing:.14em;font-weight:800;margin-bottom:14px}
+    .card p{font-size:.95rem;margin:0}
+    .two{display:grid;grid-template-columns:1.1fr .9fr;gap:42px;align-items:start}
+    .note{border-left:3px solid var(--gold);background:var(--panel);padding:20px 22px;border-radius:0 9px 9px 0}
+    .note p:last-child{margin-bottom:0}
+    .steps{counter-reset:step;list-style:none;padding:0;margin:26px 0 0}
+    .steps li{counter-increment:step;display:grid;grid-template-columns:42px 1fr;gap:14px;margin:0 0 20px;color:var(--muted)}
+    .steps li:before{content:counter(step,decimal-leading-zero);color:var(--gold);font-weight:800}
+    .sample{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:25px}
+    .sample-map{height:210px;border-radius:9px;margin:18px 0;background:
+      radial-gradient(ellipse at 28% 35%,rgba(209,188,128,.23),transparent 22%),
+      radial-gradient(ellipse at 70% 66%,rgba(209,188,128,.18),transparent 25%),
+      repeating-linear-gradient(15deg,transparent 0 24px,rgba(190,207,175,.15) 25px 26px),
+      linear-gradient(135deg,#314936,#1b2b20);position:relative;overflow:hidden}
+    .sample-map:after{content:"PREDICTED AREA";position:absolute;top:48%;left:42%;font-size:.68rem;letter-spacing:.14em;color:#f3d99e;border:1px solid #d8b56b;padding:5px 9px;border-radius:30px}
+    .tag{display:inline-block;border:1px solid rgba(216,181,107,.45);color:var(--gold);border-radius:30px;padding:4px 10px;font-size:.75rem;font-weight:700}
+    .disclaimer{font-size:.88rem;color:#c0c9bc}
+    footer{padding:35px 0 50px;color:var(--muted);font-size:.9rem}
+    footer .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    @media(max-width:760px){.links{gap:12px;font-size:.82rem}.grid{grid-template-columns:1fr}.two{grid-template-columns:1fr}.hero{padding:65px 0 55px}section{padding:58px 0}}
+  </style>
+</head>
+<body>
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">REMOTE <span>TARGETED</span> PROSPECTING</a>
+    <div class="links">
+      <a href="#method">The Method</a><a href="#process">Process</a><a href="#testing">Testing</a><a href="#examples">Examples</a><a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">An experimental prospecting approach</div>
+      <h1>Reading the landscape.<br><span style="color:var(--gold)">Testing the prediction.</span></h1>
+      <p class="lead">A personal method combining software-assisted review of aerial imagery with mental map dowsing and environmental observation to identify locations that may warrant field investigation.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#method">Explore the method</a>
+        <a class="btn secondary" href="#testing">How testing works</a>
+      </div>
+      <div class="visual" role="img" aria-label="Illustrative terrain map with a marked prediction area">
+        <div class="target"><i></i></div>
+        <div class="visual-label">Illustrative map graphic · not an actual detection result</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="method">
+    <div class="wrap two">
+      <div>
+        <div class="eyebrow">01 / Overview</div>
+        <h2>A combination of software and mental map dowsing</h2>
+        <p class="intro">My approach brings together two parts: examining aerial or satellite imagery with specialized software, and applying my own mental process to the mapped area. I use visible terrain patterns, environmental features and my observations as part of the process of selecting a location for further investigation.</p>
+        <p>The result is a prediction marked on a map. The predicted location can then be checked independently in the field using a metal detector or other suitable equipment.</p>
+      </div>
+      <div class="note">
+        <h3>What I am — and am not — claiming</h3>
+        <p>This is an unconventional, experimental form of map dowsing. I do not claim that ordinary aerial or satellite images directly detect buried gold or metal, or that this method has been scientifically established.</p>
+        <p>The central question is whether the combined approach can produce accurate, repeatable predictions under fair testing conditions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="eyebrow">02 / Workflow</div>
+      <h2>How I approach a target area</h2>
+      <p class="intro">The process is intended to turn an initial area of interest into a specific, testable map prediction.</p>
+      <div class="grid">
+        <article class="card"><div class="num">STEP 01</div><h3>Choose an area</h3><p>Select an area for preliminary review and obtain suitable aerial or satellite imagery.</p></article>
+        <article class="card"><div class="num">STEP 02</div><h3>Review the imagery</h3><p>Use specialized software to examine the image, visible terrain patterns and environmental features.</p></article>
+        <article class="card"><div class="num">STEP 03</div><h3>Apply the mental process</h3><p>Combine the visual review with my own mental map-dowsing process to select a potential target location.</p></article>
+        <article class="card"><div class="num">STEP 04</div><h3>Mark the prediction</h3><p>Mark the predicted location and define its boundaries before the field result is known.</p></article>
+        <article class="card"><div class="num">STEP 05</div><h3>Independent field check</h3><p>Have another person check the marked area using appropriate equipment, without being guided toward a preferred result.</p></article>
+        <article class="card"><div class="num">STEP 06</div><h3>Record the outcome</h3><p>Document the result, including misses and inconclusive tests, so the method can be evaluated honestly.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="examples">
+    <div class="wrap two">
+      <div>
+        <div class="eyebrow">03 / Example predictions</div>
+        <h2>Predictions should be recorded before testing</h2>
+        <p>Examples can be presented with the original map, the marked prediction, the date it was recorded and the later independent field result.</p>
+        <p>For transparency, each example should clearly distinguish between a prediction, a detector response and a confirmed recovery. A detector signal alone does not establish that the target is gold.</p>
+        <span class="tag">Evidence before conclusions</span>
+      </div>
+      <div class="sample">
+        <span class="tag">Illustrative placeholder</span>
+        <div class="sample-map"></div>
+        <h3>Example prediction area</h3>
+        <p class="disclaimer">Replace this illustrative graphic with one of your own aerial images. Add the prediction date, target-area dimensions and independent test outcome when available.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="testing">
+    <div class="wrap two">
+      <div>
+        <div class="eyebrow">04 / Independent testing</div>
+        <h2>Let the results speak</h2>
+        <p>A meaningful test should be designed so that neither the target location nor the expected result can influence the prediction.</p>
+        <ul class="steps">
+          <li><span>An independent tester selects target and control locations. The locations and target details are kept hidden from me.</span></li>
+          <li><span>I submit a marked prediction before the target locations are revealed. The prediction is dated and preserved.</span></li>
+          <li><span>The tester checks the locations using agreed equipment and a pre-defined search procedure.</span></li>
+          <li><span>Success criteria — including target size, search area and acceptable distance from the target — are agreed in advance.</span></li>
+          <li><span>All outcomes are recorded and compared with an appropriate chance baseline. Unsuccessful tests are included.</span></li>
+        </ul>
+      </div>
+      <div class="note">
+        <h3>Open to constructive criticism</h3>
+        <p>I welcome independent testing, practical questions and scientific criticism. A negative or inconclusive result is also useful information.</p>
+        <p>The purpose is not to ask anyone to accept an extraordinary claim, but to find out whether the method performs reliably beyond chance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="eyebrow">05 / Collaboration</div>
+      <h2>Interested in an independent test?</h2>
+      <p class="intro">I welcome respectful discussion with detectorists, researchers and anyone interested in designing a fair, documented test. You can contact me through my TreasureNet forum profile.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="https://www.treasurenet.com/" target="_blank" rel="noopener">Visit TreasureNet</a>
+<p><strong>Telegram group:</strong> <a href="https://t.me/DOWSINGKOROSH" target="_blank" rel="noopener noreferrer">Dowsing Korosh</a></p>
+        <a class="btn secondary" href="#top">Back to top</a>
+      </div>
+      <p class="disclaimer" style="margin-top:22px">Forum username: <strong style="color:var(--text)">Mrasolii</strong></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>© <span id="year">2026</span> Remote Targeted Prospecting · Mrasolii</div>
+    <div>Experimental method · Independent verification encouraged</div>
+  </div>
+</footer>
+</body>
+</html>
